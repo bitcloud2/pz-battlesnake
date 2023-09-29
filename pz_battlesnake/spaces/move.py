@@ -1,5 +1,5 @@
 from typing import List
-from gym.spaces.space import Space
+from gymnasium.spaces.space import Space
 import random
 
 
