@@ -128,13 +128,14 @@ class BaseEnv(ParallelEnv):
             * Add Example of return
         """
         self.agents = self.possible_agents[:]
+        info = {}
 
         if seed:
             self._options.seed = seed
         else:
             self._options.seed = None
 
-        return env_reset(self._options.options)
+        return env_reset(self._options.options), info
 
     def step(self, action):
         """
