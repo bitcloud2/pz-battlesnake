@@ -2,11 +2,10 @@ import functools
 from typing import List
 from pettingzoo import ParallelEnv
 from pettingzoo.utils import parallel_to_aec, OrderEnforcingWrapper
-from gym import spaces
+from gymnasium import spaces
 
 # Local Imports
 from pz_battlesnake.constants import DEFAULT_COLORS
-from pz_battlesnake.spaces.move import Move
 from pz_battlesnake.types.battlesnake_options import BattlesnakeOptions
 from pz_battlesnake.wrapper import env_done, env_render, env_reset, env_setup, env_step
 
@@ -102,7 +101,7 @@ class BaseEnv(ParallelEnv):
         )
 
         # assert False, "observation_space() is not implemented yet"
-        return Move()
+        return spaces.Discrete(4)
 
     def render(self, mode="color"):
         """
@@ -117,7 +116,7 @@ class BaseEnv(ParallelEnv):
         else:
             assert False, "Valid render modes are 'ascii' and 'color'"
 
-    def reset(self, seed=None, options=None):
+    def reset(self, seed=None, return_info=True, options=None):
         """
         Reset needs to initialize the `agents` attribute and must set up the
         environment so that render(), and step() can be called without issues.
@@ -135,7 +134,10 @@ class BaseEnv(ParallelEnv):
         else:
             self._options.seed = None
 
-        return env_reset(self._options.options), info
+        if return_info:
+            return env_reset(self._options.options), info
+        else:
+            return env_reset(self._options.options)
 
     def step(self, action):
         """

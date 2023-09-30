@@ -1,9 +1,9 @@
 from typing import List
-from gymnasium.spaces.space import Space
+from gymnasium.spaces import Discrete
 import random
 
 
-class Move(Space[int]):
+class Move(Discrete):
     """
     This class represents the move action in BattleSnake, which is documented under response property of the /move endpoint. Refer to the battlesnake docs: https://docs.battlesnake.com/references/api#post-move
 
@@ -18,7 +18,7 @@ class Move(Space[int]):
     possible_moves: List[int] = [0,1,2,3]
     def __init__(self):
         self.moves: List[int] = self.possible_moves
-        super().__init__()
+        super().__init__(len(self.moves))
 
     def sample(self) -> int:
         """
@@ -32,7 +32,7 @@ class Move(Space[int]):
             >>> move.sample()
             "up"
         """
-        return random.choice(self.moves)
+        return super().sample()
 
     def contains(self, x) -> bool:
         """
@@ -42,7 +42,7 @@ class Move(Space[int]):
         Returns:
             bool: True if the input is one of the 4 possible moves, otherwise False.
         """
-        return x in self.moves
+        return super().contains(x)
 
     def __repr__(self) -> str:
         """Gives a string representation of this space."""
